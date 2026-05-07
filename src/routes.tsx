@@ -1,5 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom'
 import Login from './features/auth/Login'
+import Register from './features/auth/Register'
+import Home from './pages/Home'
 // for Auth 0
 // import AuthCallback from './pages/AuthCallback'
 
@@ -8,9 +10,17 @@ import Login from './features/auth/Login'
 
 const router = createBrowserRouter([
   {
+    path: '/',
+    element: <Home />,
+  },
+  {
     path: '/login',
     element: <Login />,
   },
+  { path: '/register', 
+    element: <Register /> 
+  }
+
 
   // Add more routes here as you build pages:
   // { path: '/', element: <Home /> },
