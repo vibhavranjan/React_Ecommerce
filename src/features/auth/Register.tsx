@@ -27,8 +27,12 @@ export default function Register() {
     // Prevents the browser from refreshing the page on form submit
     e.preventDefault()
     setError('')
+    if (password.length < 8) {
+        setError('Password must be at least 8 characters')
+        return
+    }
     setLoading(true)
-
+    
     try {
       // STEP 1 — Create auth identity (email + password)
       // This registers the login credentials in Medusa's auth system

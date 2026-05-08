@@ -6,14 +6,16 @@ A React + TypeScript ecommerce frontend connected to a Medusa v2 backend. Built 
 ## Project structure
 ```
 src/
-  features/auth/Login.tsx      — Login page with Medusa auth
-  features/auth/Register.tsx   — Register page with 2-step Medusa flow
-  pages/Home.tsx               — Homepage (/) with navbar, hero, feature cards
-  pages/AuthCallback.tsx       — Auth0 callback (unused, commented out)
-  services/medusa.ts           — Medusa API helpers (getStoreProducts, getProductById)
-  routes.tsx                   — React Router config
-  main.tsx                     — App entry point
-  App.tsx                      — Root component
+  features/auth/Login.tsx           — Login page with Medusa auth
+  features/auth/Register.tsx        — Register page with 2-step Medusa flow
+  features/auth/ForgotPassword.tsx  — Forgot password page (sends reset email via SendGrid)
+  features/auth/ResetPassword.tsx   — Reset password page (reads token from URL)
+  pages/Home.tsx                    — Homepage (/) with navbar, hero, feature cards
+  pages/AuthCallback.tsx            — Auth0 callback (unused, commented out)
+  services/medusa.ts                — Medusa API helpers (getStoreProducts, getProductById)
+  routes.tsx                        — React Router config
+  main.tsx                          — App entry point
+  App.tsx                           — Root component
 ```
 
 ## Medusa backend
@@ -28,6 +30,8 @@ src/
 | `/` | Home.tsx | Done — navbar with login/logout, hero, feature cards |
 | `/login` | Login.tsx | Done — connected to Medusa auth, saves token to localStorage |
 | `/register` | Register.tsx | Done — 2-step Medusa registration flow |
+| `/forgot-password` | ForgotPassword.tsx | Done — sends reset email via SendGrid |
+| `/reset-password` | ResetPassword.tsx | Done — reads token from URL, updates password |
 
 ## Auth flow (Medusa v2)
 JWT token is saved to `localStorage` as `medusa_token` on login.
@@ -45,34 +49,53 @@ JWT token is saved to `localStorage` as `medusa_token` on login.
 **Logout:**
 - Remove `medusa_token` from localStorage and navigate to `/login`
 
+**Forgot Password:**
+- `POST /auth/customer/emailpass/reset-password` with `{ identifier: email }` → triggers SendGrid email
+- Subscriber at `medusa-backend/src/subscribers/reset-password.ts` listens to `auth.password_reset` event and sends email
+
+**Reset Password:**
+- Token arrives in URL as `?token=...` (full JWT)
+- `POST /auth/customer/emailpass/update` with `Authorization: Bearer <token>` + `{ password }` → updates password
+
+## SendGrid setup
+- Notification module configured in `medusa-config.ts`
+- Subscriber: `medusa-backend/src/subscribers/reset-password.ts`
+- Template ID: see `SENDGRID_RESET_PASSWORD_TEMPLATE` in `.env`
+- Sender: `vibhavranjan0@gmail.com`
+
 ## Home.tsx navbar logic
 - Reads token from `localStorage`
 - If logged in: fetches customer name from `/store/customers/me`, shows "Hi, {first_name}" + Logout button
 - If logged out: shows Sign in button
 - Logout clears token and redirects to `/login`
 
-## Shared constants (used in Login, Register, Home)
+## Shared constants (used in all auth files and Home)
 These are defined at the top of each file:
 ```ts
 const MEDUSA_API = import.meta.env.VITE_MEDUSA_STORE_URL || 'http://localhost:9000'
 const MEDUSA_PUBLISHABLE_KEY = import.meta.env.VITE_MEDUSA_PUBLISHABLE_KEY || 'your_key_here'
 ```
 
+## Frontend validation
+- Password minimum 8 characters — validated in Register.tsx and ResetPassword.tsx before API call
+- Confirm password match — validated in ResetPassword.tsx before API call
+
 ## What's commented out / not yet built
 - Auth0 integration (commented out in Login.tsx and routes.tsx)
-- Forgot password page
 - Products page (`/products`)
 - Product detail page (`/products/:id`)
 - Cart page (`/cart`)
 
 ## Next things to build
-1. Forgot password page (`/forgot-password`)
-2. Products listing page — `getStoreProducts()` already exists in `services/medusa.ts`
-3. Product detail page
-4. Cart
+1. Products listing page — `getStoreProducts()` already exists in `services/medusa.ts`
+2. Product detail page
+3. Cart
 
 ## env variables (in .env)
 ```
 VITE_MEDUSA_STORE_URL=http://localhost:9000
 VITE_MEDUSA_PUBLISHABLE_KEY=your_key_here
+SENDGRID_API_KEY=your_sendgrid_key
+SENDGRID_FROM=vibhavranjan0@gmail.com
+SENDGRID_RESET_PASSWORD_TEMPLATE=your_template_id
 ```
