@@ -1,6 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom'
 import Login from './features/auth/Login'
 import Register from './features/auth/Register'
+import ForgotPassword from './features/auth/ForgotPassword'
+import ResetPassword from './features/auth/ResetPassword'
 import Home from './pages/Home'
 // for Auth 0
 // import AuthCallback from './pages/AuthCallback'
@@ -19,6 +21,12 @@ const router = createBrowserRouter([
   },
   { path: '/register', 
     element: <Register /> 
+  },
+  { path: '/forgot-password', 
+    element: <ForgotPassword /> 
+  },
+  { path: '/reset-password',
+    element: <ResetPassword />
   }
 
 

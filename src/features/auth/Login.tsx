@@ -76,9 +76,9 @@ export default function Login() {
                 <label className="block text-sm font-medium text-gray-900">
                   Password
                 </label>
-                <a href="#" className="text-xs text-purple-600 hover:underline">
+                <Link to="/forgot-password" className="text-xs text-purple-600 hover:underline">
                   Forgot password?
-                </a>
+                </Link>
               </div>
               <input
                 type="password"
