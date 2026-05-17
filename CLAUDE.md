@@ -91,6 +91,26 @@ const MEDUSA_PUBLISHABLE_KEY = import.meta.env.VITE_MEDUSA_PUBLISHABLE_KEY || 'y
 2. Product detail page
 3. Cart
 
+## Code quality
+See `REACT_BEST_PRACTICES.md` for the full guide. Key rules to follow in this project:
+
+### Performance
+- Lazy load routes with `React.lazy` + `Suspense`
+- Add `loading="lazy"` + explicit `width`/`height` on all product images
+- Avoid inline functions/objects passed as props in list components
+
+### SEO
+- One `<h1>` per page
+- Descriptive link text — no "click here"
+- Add `react-helmet-async` for page titles when building product/detail pages
+
+### Accessibility
+- All inputs must have `htmlFor` + matching `id` (Register.tsx labels still missing this)
+- Use `<button>` for actions, `<Link>` for navigation — never `<div onClick>`
+- Error messages should use `role="alert"`
+- Loading states should use `role="status"`
+- All product images need descriptive `alt` text
+
 ## env variables (in .env)
 ```
 VITE_MEDUSA_STORE_URL=http://localhost:9000

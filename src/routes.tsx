@@ -4,6 +4,11 @@ import Register from './features/auth/Register'
 import ForgotPassword from './features/auth/ForgotPassword'
 import ResetPassword from './features/auth/ResetPassword'
 import Home from './pages/Home'
+import Products from './pages/Products'
+import ApiCallPractice from './pages/ApiPractice/ApiCallPractice'
+import JsonServerPractice from './pages/ApiPractice/JsonServerPractice'
+import UserAdd from './pages/ApiPractice/UserAdd'
+import EditUser from './pages/ApiPractice/EditUser'
 // for Auth 0
 // import AuthCallback from './pages/AuthCallback'
 
@@ -27,6 +32,24 @@ const router = createBrowserRouter([
   },
   { path: '/reset-password',
     element: <ResetPassword />
+  },
+  { path: '/products',
+    element: <Products />
+  },
+  { path: '/api-call-practice',
+    element: <ApiCallPractice />
+  },
+  {
+    path: '/jsonserverpractice',
+    element: <JsonServerPractice />
+  },
+  {
+    path: '/adduser',
+    element: <UserAdd />
+  },
+  {
+    path: '/edit/:id',
+    element: <EditUser />
   }
 
 

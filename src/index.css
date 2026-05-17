@@ -1,2 +1,26 @@
 @import "tailwindcss";
 
+.user-list{
+  display: flex;
+  justify-content: space-around;
+  border: 1px solid #aaa;
+  margin: 0;
+  padding: 10px;
+  list-style-type: none;
+}
+.user-list-head{
+  font-size: 20px;
+  font-weight: 800;
+}
+.main_heading{
+    font-size: 30px;
+    line-height: 45px;
+    font-weight: 800;
+    margin-bottom: 1rem;
+}
+.nav-list{
+    display: flex;
+    justify-content: space-around;
+    width: 400px;
+    list-style-type: none;
+}
